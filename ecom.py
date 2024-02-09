@@ -16,3 +16,9 @@ sorted_products = df.sort_values(by='revenue', ascending=False)
 missing_values = df.isnull().sum()
 
 df.groupby('product_category')['revenue'].sum().plot(kind='bar', title='Total Revenue by Product Category')
+
+df = pd.read_csv("diabetes.csv")
+
+df = pd.read_csv("diabetes.txt", sep="\s")
+# Extracting the second sheet since Python uses 0-indexing
+df = pd.read_excel('diabetes_multi.xlsx', sheet_name=1)
