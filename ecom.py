@@ -1,24 +1,120 @@
 import pandas as pd
 
-# Load the dataset into a pandas DataFrame
-df = pd.read_csv('ecommerce_data.csv')
+def load_data(file_path):
+    """
+    Load the dataset into a pandas DataFrame.
+    
+    Parameters:
+        file_path (str): Path to the dataset file.
+        
+    Returns:
+        pandas.DataFrame: DataFrame containing the dataset.
+    """
+    df = pd.read_csv(file_path)
+    return df
 
-print(df.describe())
+def describe_data(df):
+    """
+    Generate descriptive statistics for the DataFrame.
+    
+    Parameters:
+        df (pandas.DataFrame): DataFrame to describe.
+    """
+    print(df.describe())
 
-# Filter data for transactions made by a specific customer
-specific_customer = df[df['customer_id'] == '12345']
+def filter_by_customer(df, customer_id):
+    """
+    Filter data for transactions made by a specific customer.
+    
+    Parameters:
+        df (pandas.DataFrame): DataFrame to filter.
+        customer_id (str): ID of the customer to filter by.
+        
+    Returns:
+        pandas.DataFrame: DataFrame containing transactions made by the specific customer.
+    """
+    return df[df['customer_id'] == customer_id]
 
-# Filter data for transactions made in a specific month
-specific_month = df[df['transaction_date'].str.startswith('2023-05')]
+def filter_by_month(df, year_month):
+    """
+    Filter data for transactions made in a specific month.
+    
+    Parameters:
+        df (pandas.DataFrame): DataFrame to filter.
+        year_month (str): Year and month to filter by in 'YYYY-MM' format.
+        
+    Returns:
+        pandas.DataFrame: DataFrame containing transactions made in the specific month.
+    """
+    return df[df['transaction_date'].str.startswith(year_month)]
 
-sorted_products = df.sort_values(by='revenue', ascending=False)
+def sort_by_revenue(df):
+    """
+    Sort DataFrame by revenue in descending order.
+    
+    Parameters:
+        df (pandas.DataFrame): DataFrame to sort.
+        
+    Returns:
+        pandas.DataFrame: DataFrame sorted by revenue in descending order.
+    """
+    return df.sort_values(by='revenue', ascending=False)
 
-missing_values = df.isnull().sum()
+def count_missing_values(df):
+    """
+    Count missing values in the DataFrame.
+    
+    Parameters:
+        df (pandas.DataFrame): DataFrame to check for missing values.
+        
+    Returns:
+        pandas.Series: Series containing counts of missing values for each column.
+    """
+    return df.isnull().sum()
 
-df.groupby('product_category')['revenue'].sum().plot(kind='bar', title='Total Revenue by Product Category')
+def plot_total_revenue_by_category(df):
+    """
+    Plot total revenue by product category.
+    
+    Parameters:
+        df (pandas.DataFrame): DataFrame containing the dataset.
+    """
+    df.groupby('product_category')['revenue'].sum().plot(kind='bar', title='Total Revenue by Product Category')
 
-df = pd.read_csv("diabetes.csv")
+def load_text_data(file_path):
+    """
+    Load text-based dataset into a pandas DataFrame.
+    
+    Parameters:
+        file_path (str): Path to the text-based dataset file.
+        
+    Returns:
+        pandas.DataFrame: DataFrame containing the text-based dataset.
+    """
+    df = pd.read_csv(file_path, sep="\s")
+    return df
 
-df = pd.read_csv("diabetes.txt", sep="\s")
-# Extracting the second sheet since Python uses 0-indexing
-df = pd.read_excel('diabetes_multi.xlsx', sheet_name=1)
+def load_excel_data(file_path, sheet_name):
+    """
+    Load Excel dataset into a pandas DataFrame.
+    
+    Parameters:
+        file_path (str): Path to the Excel file.
+        sheet_name (str or int): Name or index of the sheet to read.
+        
+    Returns:
+        pandas.DataFrame: DataFrame containing the Excel dataset.
+    """
+    df = pd.read_excel(file_path, sheet_name=sheet_name)
+    return df
+
+# Usage examples:
+df = load_data('ecommerce_data.csv')
+describe_data(df)
+specific_customer = filter_by_customer(df, '12345')
+specific_month = filter_by_month(df, '2023-05')
+sorted_products = sort_by_revenue(df)
+missing_values = count_missing_values(df)
+plot_total_revenue_by_category(df)
+df_text = load_text_data("diabetes.txt")
+df_excel = load_excel_data('diabetes_multi.xlsx', sheet_name=1)
